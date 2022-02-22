@@ -1,7 +1,46 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
-#   Character.create(name: "Luke", movie: movies.first)
+# Library bundled with rails to parse data from a csv file
+require "csv"
+
+# Fresh database to start
+Movie.delete_all
+ProductionCompany.delete_all
+
+# Access the CSV file
+filename = Rails.root.join("db/top_movies.csv") # Outputs absolute path of the file name
+# puts "Loading Movie the CSV file: #{filename}"
+
+csv_data = File.read(filename) # Return everything from csv and store it
+
+# Parse out data row by row in the csv file
+movies = CSV.parse(csv_data, headers: true, encoding: "utf-8")
+
+movies.each do |m|
+  # populate database
+  # First create a variable that creates production company data for our PK table
+  # Note: The example below would violate contraints for uniqueness if there are multiple of the same production companies.
+  # production_company = ProductionCompany.create(name: m["production_company"])
+
+  # To get arround the uniqueness constraint, use find_or_create_by
+  # This will either return a found production company, or create a new one
+  production_company = ProductionCompany.find_or_create_by(name: m["production_company"])
+
+  # Apply safeguards to assure validation of uniqueness is not violated
+  # Check if a production_company is created & passes validation before creating movie data
+  if production_company && production_company.valid?
+    # Create a movie for the production company
+    # We will use association to create a movie
+    movie = production_company.movies.create(
+      title:        m["original_title"],
+      year:         m["year"],
+      duration:     m["duration"],
+      description:  m["description"],
+      average_vote: m["avg_vote"]
+    )
+    puts "Invalid movie #{m['original_title']}" unless movie&.valid?
+  else # Provide details on why a failure occurred
+    puts "Invalid production company #{m['production_company']} for movie #{m['original_title']}"
+  end
+end
+
+puts "Created #{ProductionCompany.count} Production Companies"
+puts "Created #{Movie.count} Movies"
