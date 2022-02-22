@@ -1,0 +1,12 @@
+Movie Table
+- id, title, year, duration, description, average_vote, production_company_id
+
+Production Company Table (1 to many)
+- id, name
+
+Movie_Genre Table (Associative aka junction table)
+- movie_id, genre_id
+
+Genres Table (Many to many relations with movies)
+- id, name
+
