@@ -10,3 +10,18 @@ Movie_Genre Table (Associative aka junction table)
 Genres Table (Many to many relations with movies)
 - id, name
 
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Routing Information
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Main root
+GET /
+
+# Movies Route
+GET /Movies
+
+# Member Route (Member of the movie collection)
+GET /Movies/:id
+
+# Repeat for production companies
+GET /Production_Comapnies
+GET /Production_Coapnies/:id
