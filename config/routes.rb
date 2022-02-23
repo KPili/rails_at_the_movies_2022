@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  # get "home/index"
   # get "production_companies/index"
   # get "production_companies/show"
   # get "movies/index"
@@ -9,4 +10,5 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
+  root to: "home#index"
 end
