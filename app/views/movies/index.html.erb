@@ -2,6 +2,6 @@
 <%# <p>Find me in app/views/movies/index.html.erb</p> %>
 <% @movies.each do |movie|%>
   <li>
-    <%= link_to movie.title, movie %> was produced by <%= link_to movie.production_company.name%>
+    <%= link_to movie.title, movie %> was produced by <%= link_to movie.production_company.name, production_companies_path%>
   </li>
 <%end%>

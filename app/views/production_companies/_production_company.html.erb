@@ -1,0 +1,5 @@
+<li>
+  <%# Because partials have to match 1 to 1, even the variable to access data needs to match %>
+  <%= link_to production_company.name, production_company%>
+  <em>(<%= pluralize production_company.movie_count, "Top Movie"%>)</em>
+</li>
