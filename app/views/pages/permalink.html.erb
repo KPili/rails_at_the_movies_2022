@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @page %>
+
+<div>
+  <%= link_to "Edit this page", edit_page_path(@page), class: "button is-warning" %> |
+  <%= link_to "Back to pages", pages_path %>
+
+  <%= button_to "Destroy this page", @page, method: :delete, data: {confirm: 'Are you sure?'}, class: "button is-danger" %>
+</div>

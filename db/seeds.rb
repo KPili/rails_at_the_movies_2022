@@ -4,7 +4,7 @@ require "csv"
 # Fresh database to start
 Movie.delete_all
 ProductionCompany.delete_all
-
+Page.delete_all
 # Access the CSV file
 filename = Rails.root.join("db/top_movies.csv") # Outputs absolute path of the file name
 # puts "Loading Movie the CSV file: #{filename}"
@@ -44,3 +44,15 @@ end
 
 puts "Created #{ProductionCompany.count} Production Companies"
 puts "Created #{Movie.count} Movies"
+
+### Working with Pages Model (note: This method in practice is not recommended unlesss testing)
+Page.create(
+  title:     "About the Data",
+  content:   "The data powering this lovely website was provided by IMDB Kaggle Dataset.",
+  permalink: "about"
+)
+Page.create(
+  title:     "Contact Us",
+  content:   "If you like this site and want to chat about the project or the data, email me at: obviously_faker@email.com",
+  permalink: "contact"
+)
