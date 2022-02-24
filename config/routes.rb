@@ -8,7 +8,12 @@ Rails.application.routes.draw do
   # get "movies/index"
   # get "movies/show"
 
-  resources :movies, only: %i[index show]
+  # implementing a route for the search feature
+  resources :movies, only: %i[index show] do
+    collection do
+      get "search" # movies/search(:format) is now available in our route paths (rails/info)
+    end
+  end
   resources :production_companies, only: %i[index show]
 
   # Defines the root path route ("/")
