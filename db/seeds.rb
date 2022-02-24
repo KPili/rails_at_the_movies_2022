@@ -5,6 +5,9 @@ require "csv"
 Movie.delete_all
 ProductionCompany.delete_all
 Page.delete_all
+Genre.delete_all
+MovieGenre.delete_all
+
 # Access the CSV file
 filename = Rails.root.join("db/top_movies.csv") # Outputs absolute path of the file name
 # puts "Loading Movie the CSV file: #{filename}"
@@ -36,7 +39,22 @@ movies.each do |m|
       description:  m["description"],
       average_vote: m["avg_vote"]
     )
-    puts "Invalid movie #{m['original_title']}" unless movie&.valid?
+
+    unless movie&.valid?
+      puts "Invalid movie #{m['original_title']}"
+      next
+    end
+
+    # Create our genres in this space
+    genres = m["genre"].split(",").map(&:strip) # this is short hand. Long Form: collection.map {|collection_item|collection_item.strip}
+
+    genres.each do |genre_name|
+      genre = Genre.find_or_create_by(name: genre_name)
+
+      MovieGenre.create(movie: movie, genre: genre)
+    end
+    # End our genre creations
+
   else # Provide details on why a failure occurred
     puts "Invalid production company #{m['production_company']} for movie #{m['original_title']}"
   end
@@ -44,6 +62,8 @@ end
 
 puts "Created #{ProductionCompany.count} Production Companies"
 puts "Created #{Movie.count} Movies"
+puts "Created #{Genre.count} Genres"
+puts "Created #{MovieGenre.count} Movie Genres"
 
 ### Working with Pages Model (note: This method in practice is not recommended unlesss testing)
 Page.create(
